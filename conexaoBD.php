@@ -12,4 +12,3 @@
         echo "<p>Erro ao tentar conectar à Base de Dados <b>$database</b></p>";
     }
 
-?>
