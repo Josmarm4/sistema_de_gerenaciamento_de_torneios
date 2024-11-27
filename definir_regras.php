@@ -29,7 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <style>
         body {
             background-color: #f8f9fa;
-            padding-top: 60px;
+            background-image: url('img/img01.webp'); /* Caminho para a imagem */
+            background-size: cover;  /* A imagem cobre toda a tela */
+            background-position: center center;  /* Centraliza a imagem */
+            background-attachment: fixed;  /* Fixar a imagem ao fundo */
+            padding-top: 60px; /* Ajusta o espaço para o topo da página */
         }
         .navbar-custom {
             background-color: #2FB659;
@@ -78,32 +82,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-    <a class="navbar-brand" href="index.php">IFPR - Esportes</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+        <a class="navbar-brand" href="pagina_principal_administrador.php">IFPR - Esportes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="painel_administrador.php">Painel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="cadastro_equipes.php">Cadastro de Equipes</a>
+                    <a class="nav-link" href="pagina_principal_administrador.php">Página Inicial</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="inscricao_torneio.php">Inscrição em Torneios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="criar_torneio.php">Criação de Torneios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="resultados_jogos.php">Resultados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="classificacao.php">Classificação</a>
+                    <a class="nav-link" href="logout.php">Sair</a>
                 </li>
             </ul>
-    </div>
+        </div>
     </nav>
 
     <!-- Formulário de Definição de Regras -->
@@ -125,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <label for="id_torneio">Torneio</label>
                     <select class="form-control" id="id_torneio" name="id_torneio" required>
                         <option value="">Selecione o torneio</option>
-                        <?php while ($torneio = $result_torneios->fetch_assoc()) { ?>
+                        <?php while ($torneio = $result->fetch_assoc()) { ?>
                             <option value="<?= $torneio['id'] ?>"><?= $torneio['nome_torneio'] ?></option>
                         <?php } ?>
                     </select>

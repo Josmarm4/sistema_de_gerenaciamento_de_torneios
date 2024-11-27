@@ -1,3 +1,18 @@
+<?php
+session_start();
+include 'conexaoBD.php'; // Conexão com o banco de dados
+
+// Verificar se o usuário está logado e é um usuário comum
+if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_tipo'] == 'admin') {
+    header("Location: login.php"); // Redireciona caso não seja um usuário comum
+    exit;
+}
+
+// Obter todos os torneios disponíveis
+$sql = "SELECT id, nome_torneio, data_inicio, data_fim FROM torneios WHERE data_fim >= CURDATE()";
+$result = $link->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -26,56 +41,38 @@
             color: #d4d4d4;
         }
 
-        .container-form {
+        .container {
+            max-width: 900px;
+            margin-top: 100px;
+            padding: 20px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            padding: 30px;
-            margin: 50px auto;
         }
 
-        .container-form h3 {
+        h3 {
             color: #2FB659;
             text-align: center;
-            margin-bottom: 20px;
         }
 
-        .btn-custom {
-            background-color: #28a745;
-            border-color: #28a745;
+        .table thead {
+            background-color: #2FB659;
             color: white;
         }
-
-        .btn-custom:hover, 
-        .btn-custom:focus {
-            background-color: #218838;
-            border-color: #1e7e34;
-            color: white !important;
-            text-decoration: none;
-        }
-
-        .btn-custom:active {
-            background-color: #1e7e34;
-            border-color: #1c7430;
-        }
     </style>
-    <title>Cadastro de Equipes</title>
+    <title>Torneios Disponíveis</title>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-        <a class="navbar-brand" href="pagina_principal_administrador.php">IFPR - Esportes</a>
+        <a class="navbar-brand" href="pagina_principal.php">IFPR - Esportes</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="painel_administrador.php">Painel</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pagina_principal_administrador.php">Página Inicial</a>
+                    <a class="nav-link" href="pagina_principal.php">Página Inicial</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout.php">Sair</a>
@@ -84,24 +81,33 @@
         </div>
     </nav>
 
-    <!-- Formulário de Cadastro -->
-    <div class="container-form">
-        <h3>Cadastro de Equipe</h3>
-        <form method="POST" action="">
-            <div class="form-group">
-                <label for="nome_equipe">Nome da Equipe</label>
-                <input type="text" class="form-control" id="nome_equipe" name="nome_equipe" required>
-            </div>
-            <div class="form-group">
-                <label for="treinador">Treinador</label>
-                <input type="text" class="form-control" id="treinador" name="treinador" required>
-            </div>
-            <div class="form-group">
-                <label for="contato">Contato</label>
-                <input type="text" class="form-control" id="contato" name="contato" required>
-            </div>
-            <button type="submit" class="btn btn-custom btn-block">Cadastrar</button>
-        </form>
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <h3>Torneios Disponíveis</h3>
+
+        <!-- Tabela de Torneios -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Nome do Torneio</th>
+                    <th scope="col">Data Início</th>
+                    <th scope="col">Data Fim</th>
+                    <th scope="col">Inscrição</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()) { ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['nome_torneio']); ?></td>
+                        <td><?= htmlspecialchars($row['data_inicio']); ?></td>
+                        <td><?= htmlspecialchars($row['data_fim']); ?></td>
+                        <td>
+                            <a href="inscricao_torneio.php?id=<?= $row['id']; ?>" class="btn btn-custom btn-sm">Inscrever</a>
+                        </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+        </table>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

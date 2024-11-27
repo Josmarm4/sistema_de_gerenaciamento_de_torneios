@@ -12,7 +12,11 @@ include 'conexaoBD.php';
     <style>
         body {
             background-color: #f8f9fa;
-            padding-top: 60px;
+            background-image: url('img/img01.webp'); /* Caminho para a imagem */
+            background-size: cover;  /* A imagem cobre toda a tela */
+            background-position: center center;  /* Centraliza a imagem */
+            background-attachment: fixed;  /* Fixar a imagem ao fundo */
+            padding-top: 60px; /* Ajusta o espaço para o topo da página */
         }
         .navbar-custom {
             background-color: #2FB659;
@@ -57,17 +61,20 @@ include 'conexaoBD.php';
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-    <a class="navbar-brand" href="index.php">IFPR - Esportes</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+        <a class="navbar-brand" href="pagina_principal_administrador.php">IFPR - Esportes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="pagina_principal_administrador.php">Página Inicial</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="logout.php">Sair</a>
                 </li>
             </ul>
-    </div>
+        </div>
     </nav>
 
     <div class="dashboard">
@@ -80,7 +87,7 @@ include 'conexaoBD.php';
                 <a href="inscricao_torneio.php" class="btn-dashboard d-block">Gerenciar Inscrições</a>
             </div>
             <div class="col-md-4 mb-4">
-                <a href="criar_torneio.php" class="btn-dashboard d-block">Criar Torneio</a>
+                <a href="gerenciar_torneios.php" class="btn-dashboard d-block">Criar Torneio</a>
             </div>
             <div class="col-md-4 mb-4">
                 <a href="tabela_jogos.php" class="btn-dashboard d-block">Tabela de Jogos</a>

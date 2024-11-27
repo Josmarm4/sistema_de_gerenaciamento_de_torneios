@@ -1,3 +1,31 @@
+<?php
+session_start();
+include 'conexaoBD.php'; // Certifique-se de que a conexão com o banco de dados está correta
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php"); // Redireciona para o login caso o usuário não esteja autenticado
+    exit;
+}
+
+// Obter informações do usuário logado
+$usuario_id = $_SESSION['usuario_id'];
+$sql = "SELECT nome FROM usuarios WHERE id = ?";
+$stmt = $link->prepare($sql);
+$stmt->bind_param("i", $usuario_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $usuario = $result->fetch_assoc();
+    $usuario_nome = $usuario['nome'];
+} else {
+    $usuario_nome = "Usuário desconhecido";
+}
+
+$stmt->close();
+?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,54 +41,39 @@
             background-attachment: fixed;  /* Fixar a imagem ao fundo */
             padding-top: 60px; /* Ajusta o espaço para o topo da página */
         }
-
         .navbar-custom {
             background-color: #2FB659;
         }
-
         .navbar-custom .navbar-brand, .navbar-custom .nav-link {
             color: white;
         }
-
         .navbar-custom .nav-link:hover {
             color: #d4d4d4;
         }
-
-        .container-form {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            padding: 30px;
-            margin: 50px auto;
+        .container {
+            margin-top: 20px;
         }
-
-        .container-form h3 {
-            color: #2FB659;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
         .btn-custom {
-            background-color: #28a745;
-            border-color: #28a745;
-            color: white;
+            background-color: #28a745; /* Verde suave */
+            border-color: #28a745;     /* Cor de borda ajustada */
+            color: white;              /* Cor do texto permanece branca */
         }
 
         .btn-custom:hover, 
         .btn-custom:focus {
-            background-color: #218838;
-            border-color: #1e7e34;
-            color: white !important;
-            text-decoration: none;
+            background-color: #218838; /* Verde escuro para o hover */
+            border-color: #1e7e34;     /* Cor de borda escura para o hover */
+            color: white !important;   /* Garante que a cor do texto permaneça branca */
+            text-decoration: none;     /* Remove qualquer sublinhado, se houver */
         }
 
         .btn-custom:active {
-            background-color: #1e7e34;
-            border-color: #1c7430;
+            background-color: #1e7e34; /* Tom escuro quando pressionado */
+            border-color: #1c7430;     /* Cor de borda mais escura no estado ativo */
         }
+
     </style>
-    <title>Cadastro de Equipes</title>
+    <title>Página Principal</title>
 </head>
 <body>
     <!-- Navbar -->
@@ -75,7 +88,7 @@
                     <a class="nav-link" href="painel_administrador.php">Painel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="pagina_principal_administrador.php">Página Inicial</a>
+                    <a class="nav-link" href="resultados_jogos.php">Resultados</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="logout.php">Sair</a>
@@ -84,24 +97,15 @@
         </div>
     </nav>
 
-    <!-- Formulário de Cadastro -->
-    <div class="container-form">
-        <h3>Cadastro de Equipe</h3>
-        <form method="POST" action="">
-            <div class="form-group">
-                <label for="nome_equipe">Nome da Equipe</label>
-                <input type="text" class="form-control" id="nome_equipe" name="nome_equipe" required>
-            </div>
-            <div class="form-group">
-                <label for="treinador">Treinador</label>
-                <input type="text" class="form-control" id="treinador" name="treinador" required>
-            </div>
-            <div class="form-group">
-                <label for="contato">Contato</label>
-                <input type="text" class="form-control" id="contato" name="contato" required>
-            </div>
-            <button type="submit" class="btn btn-custom btn-block">Cadastrar</button>
-        </form>
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Bem-vindo, <?= $usuario_nome ?>!</h1>
+            <p class="lead">Aqui você pode gerenciar torneios, visualizar resultados e muito mais.</p>
+            <hr class="my-4">
+            <p>Escolha uma das opções acima para começar.</p>
+            <a class="btn btn-custom btn-lg" href="painel_administrador.php" role="button">Acessar Painel de Administração</a>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

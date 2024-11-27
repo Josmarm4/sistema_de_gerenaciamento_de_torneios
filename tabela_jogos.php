@@ -3,7 +3,7 @@
 include 'conexaoBD.php';
 
 // Consulta para obter as informações das partidas
-$sql = "SELECT p.id, e1.nome_equipe AS equipe_casa, e2.nome_equipe AS equipe_fora, p.data_partida, p.hora_partida, p.local
+$sql = "SELECT p.id, e1.nome_equipe AS equipe_casa, e2.nome_equipe AS equipe_fora, p.data_partida, p.hora_partida, p.local_torneio
                  FROM partidas p
                  JOIN equipes e1 ON p.id_equipe_casa = e1.id
                  JOIN equipes e2 ON p.id_equipe_fora = e2.id
@@ -21,7 +21,11 @@ $result = $link->query($sql);
     <style>
         body {
             background-color: #f8f9fa;
-            padding-top: 60px;
+            background-image: url('img/img01.webp'); /* Caminho para a imagem */
+            background-size: cover;  /* A imagem cobre toda a tela */
+            background-position: center center;  /* Centraliza a imagem */
+            background-attachment: fixed;  /* Fixar a imagem ao fundo */
+            padding-top: 60px; /* Ajusta o espaço para o topo da página */
         }
         .navbar-custom {
             background-color: #2FB659;
@@ -48,35 +52,23 @@ $result = $link->query($sql);
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
-    <a class="navbar-brand" href="index.php">IFPR - Esportes</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+        <a class="navbar-brand" href="pagina_principal_administrador.php">IFPR - Esportes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.php">Home</a>
+                    <a class="nav-link" href="painel_administrador.php">Painel</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="cadastro_equipes.php">Cadastro de Equipes</a>
+                    <a class="nav-link" href="pagina_principal_administrador.php">Página Inicial</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="inscricao_torneio.php">Inscrição em Torneios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="criar_torneio.php">Criação de Torneios</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="resultados_jogos.php">Resultados</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="classificacao.php">Classificação</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="tabela_jogos.php">Tabela de Jogos</a>
+                    <a class="nav-link" href="logout.php">Sair</a>
                 </li>
             </ul>
-    </div>
+        </div>
     </nav>
 
     <!-- Tabela de Jogos -->
@@ -100,7 +92,7 @@ $result = $link->query($sql);
                             <td><?= date('H:i', strtotime($row['hora_partida'])); ?></td>
                             <td><?= $row['equipe_casa']; ?></td>
                             <td><?= $row['equipe_fora']; ?></td>
-                            <td><?= $row['local']; ?></td>
+                            <td><?= $row['local_torneio']; ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>
